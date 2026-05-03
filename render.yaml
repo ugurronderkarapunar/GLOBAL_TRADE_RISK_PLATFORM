@@ -1,0 +1,69 @@
+# render.yaml
+services:
+  - type: web
+    name: globaltrade-api
+    env: python
+    region: frankfurt
+    plan: starter
+    buildCommand: pip install -r requirements.txt && prisma generate
+    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /health
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: globaltrade-db
+          property: connectionString
+      - key: REDIS_URL
+        fromService:
+          name: globaltrade-redis
+          type: redis
+          property: connectionString
+      - key: SECRET_KEY
+        generateValue: true
+      - key: NEWSAPI_KEY
+        sync: false
+      - key: OPENAI_API_KEY
+        sync: false
+      - key: SERPAPI_KEY
+        sync: false
+      - key: CORS_ORIGINS
+        value: "https://your-frontend.onrender.com"
+
+  - type: worker
+    name: globaltrade-worker
+    env: python
+    region: frankfurt
+    plan: starter
+    buildCommand: pip install -r requirements.txt
+    startCommand: celery -A app.worker worker --loglevel=info --concurrency=2
+    envVars:
+      - fromService:
+          name: globaltrade-api
+          type: web
+        key: DATABASE_URL
+      - fromService:
+          name: globaltrade-api
+          type: web
+        key: REDIS_URL
+      - fromService:
+          name: globaltrade-api
+          type: web
+        key: SECRET_KEY
+      - fromService:
+          name: globaltrade-api
+          type: web
+        key: NEWSAPI_KEY
+      - fromService:
+          name: globaltrade-api
+          type: web
+        key: OPENAI_API_KEY
+
+  - type: redis
+    name: globaltrade-redis
+    plan: free
+    region: frankfurt
+
+databases:
+  - name: globaltrade-db
+    plan: starter
+    region: frankfurt
