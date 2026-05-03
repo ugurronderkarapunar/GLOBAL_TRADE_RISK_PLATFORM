@@ -1,0 +1,30 @@
+// messages/ar.json
+{
+  "RiskCard": {
+    "political": "السياسي",
+    "economic": "الاقتصادي",
+    "security": "الأمني",
+    "riskLevel": "مستوى المخاطرة",
+    "trend": "الاتجاه"
+  },
+  "Dashboard": {
+    "title": "لوحة مخاطر التجارة العالمية",
+    "subtitle": "تحليلات فورية قائمة على الذكاء الاصطناعي",
+    "heatmap": "خريطة المخاطر الحرارية"
+  }
+}
+// messages/tr.json
+{
+  "RiskCard": {
+    "political": "Siyasi",
+    "economic": "Ekonomik",
+    "security": "Güvenlik",
+    "riskLevel": "Risk Seviyesi",
+    "trend": "Eğilim"
+  },
+  "Dashboard": {
+    "title": "Küresel Ticaret Risk Paneli",
+    "subtitle": "Yapay Zeka Destekli Anlık Analizler",
+    "heatmap": "Risk Isı Haritası"
+  }
+}
